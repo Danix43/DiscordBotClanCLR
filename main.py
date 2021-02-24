@@ -25,7 +25,7 @@ class MyClient(discord.Client):
 
             embed = discord.Embed(title="👉🏻 Statusul Aplicatiilor in Factiuni 👈🏻", 
                                 url="https://www.rpg2.b-zone.ro/factions/index",
-                                description=f"⏰ Ultima data actualizat la {datetime.fromtimestamp(tz=tz).now()} ⏰",
+                                description=f"⏰ Ultima data actualizat la {datetime.now(tz)} ⏰",
                                 color=0x00ff62)
             embed.set_author(name="Danix43", icon_url="https://cdn.discordapp.com/avatars/783680772014997546/92a2a4d507b520d27aa91121a8dece50.png")
             embed.set_thumbnail(url="http://i.imgur.com/Z3UHdYS.png")
@@ -37,7 +37,11 @@ class MyClient(discord.Client):
             await self.wait_until_ready()
             data = await self.scraper.check_factions()
             print("sending message")
-            await client.get_channel(813881450423386142).send(embed=await create_message(data))
+
+            # dev channel
+            await client.get_channel(813745203680378890).send(embed=await create_message(data))
+            # prod channel
+            # await client.get_channel(813881450423386142).send(embed=await create_message(data))
             print("done, waiting")
             await asyncio.sleep(3600)
             print("done waiting, resuming")
@@ -48,7 +52,7 @@ class MyClient(discord.Client):
 
             embed = discord.Embed(title="👉🏻 Situatia turfurilor in mafii 👈🏻", 
                                 url="https://www.rpg2.b-zone.ro/wars/turfs",
-                                description=f"⏰ Ultima data actualizat la {datetime.fromtimestamp(tz=tz).now()} ⏰",
+                                description=f"⏰ Ultima data actualizat la {datetime.now(tz)} ⏰",
                                 color=0x00ff62)
             embed.set_author(name="Danix43", icon_url="https://cdn.discordapp.com/avatars/783680772014997546/92a2a4d507b520d27aa91121a8dece50.png")
             embed.set_thumbnail(url="http://i.imgur.com/Z3UHdYS.png")
@@ -57,9 +61,13 @@ class MyClient(discord.Client):
             return embed
         await self.wait_until_ready()
         # data = await self.scraper.check_turfs()
-        data = {"🔴 Atentie! 🔴", "🔴 War-urile a fost oprite temporar din cauza lagului de pe server 🔴"}
+        message = ("- War-urile a fost oprite temporar din cauza lagului de pe server")
+        data = {"🔴 Atentie! 🔴": message}
         print("sending message")
-        await client.get_channel(813881497525289031).send(embed=await create_message(data))
+        # dev channel
+        await client.get_channel(813834934673735761).send(embed=await create_message(data))
+        # prod channel
+        # await client.get_channel(813881497525289031).send(embed=await create_message(data))
         print("done, waiting")
         await asyncio.sleep(86400)
         print("done waiting, resuming")
