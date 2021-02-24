@@ -39,9 +39,9 @@ class MyClient(discord.Client):
             print("sending message")
 
             # dev channel
-            await client.get_channel(813745203680378890).send(embed=await create_message(data))
+            # await client.get_channel(813745203680378890).send(embed=await create_message(data))
             # prod channel
-            # await client.get_channel(813881450423386142).send(embed=await create_message(data))
+            await client.get_channel(813881450423386142).send(embed=await create_message(data))
             print("done, waiting")
             await asyncio.sleep(3600)
             print("done waiting, resuming")
@@ -65,9 +65,9 @@ class MyClient(discord.Client):
         data = {"🔴 Atentie! 🔴": message}
         print("sending message")
         # dev channel
-        await client.get_channel(813834934673735761).send(embed=await create_message(data))
+        # await client.get_channel(813834934673735761).send(embed=await create_message(data))
         # prod channel
-        # await client.get_channel(813881497525289031).send(embed=await create_message(data))
+        await client.get_channel(813881497525289031).send(embed=await create_message(data))
         print("done, waiting")
         await asyncio.sleep(86400)
         print("done waiting, resuming")
