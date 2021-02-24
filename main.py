@@ -1,9 +1,8 @@
-from discord.colour import Colour
 from scraper import Scraper
 import discord
 import asyncio
-import datetime
-
+from datetime import datetime
+import pytz
 
 class MyClient(discord.Client):
 
@@ -22,9 +21,11 @@ class MyClient(discord.Client):
 
     async def scrap_factions(self):
         async def create_message(data):
+            tz = pytz.timezone("Europe/Bucharest")
+
             embed = discord.Embed(title="👉🏻 Statusul Aplicatiilor in Factiuni 👈🏻", 
                                 url="https://www.rpg2.b-zone.ro/factions/index",
-                                description=f"⏰ Ultima data actualizat la {datetime.datetime.now()} ⏰",
+                                description=f"⏰ Ultima data actualizat la {datetime.fromtimestamp(tz=tz).now()} ⏰",
                                 color=0x00ff62)
             embed.set_author(name="Danix43", icon_url="https://cdn.discordapp.com/avatars/783680772014997546/92a2a4d507b520d27aa91121a8dece50.png")
             embed.set_thumbnail(url="http://i.imgur.com/Z3UHdYS.png")
@@ -43,9 +44,11 @@ class MyClient(discord.Client):
     
     async def scrap_turfs(self):
         async def create_message(data):
+            tz = pytz.timezone("Europe/Bucharest")
+
             embed = discord.Embed(title="👉🏻 Situatia turfurilor in mafii 👈🏻", 
                                 url="https://www.rpg2.b-zone.ro/wars/turfs",
-                                description=f"⏰ Ultima data actualizat la {datetime.datetime.now()} ⏰",
+                                description=f"⏰ Ultima data actualizat la {datetime.fromtimestamp(tz=tz).now()} ⏰",
                                 color=0x00ff62)
             embed.set_author(name="Danix43", icon_url="https://cdn.discordapp.com/avatars/783680772014997546/92a2a4d507b520d27aa91121a8dece50.png")
             embed.set_thumbnail(url="http://i.imgur.com/Z3UHdYS.png")

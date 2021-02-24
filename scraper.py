@@ -1,7 +1,6 @@
 import aiohttp
 from bs4 import BeautifulSoup
 import re
-from sty import fg
 
 class Scraper:
 
