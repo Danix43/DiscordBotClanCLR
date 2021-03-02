@@ -3,6 +3,11 @@ import discord
 import asyncio
 from datetime import datetime
 import pytz
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 class MyClient(discord.Client):
 
@@ -78,7 +83,7 @@ intents.members = True
 
 
 client = MyClient(intents=intents)
-client.run('ODEzMzM0NDU2MDU1NjI3Nzc2.YDNyvQ.LZQ4Qfloi3mvQwbkN2Ln64EPl80')
+client.run(TOKEN)
 
 if __name__ == "__main__":
     MyClient()
