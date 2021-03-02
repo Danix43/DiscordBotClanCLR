@@ -1,6 +1,7 @@
 import aiohttp
 from bs4 import BeautifulSoup
 import re
+import requests
 
 class Scraper:
 
@@ -110,6 +111,72 @@ class Scraper:
 
             return count_turfs(process_result(turfs))
 
+    def check_clan_rank(self, player_link):
+        ranks = {
+            "6" : "Mano Destra - 6",
+            "5" : "Supreme Nap - 5",
+            "4" : "Alcapone - 4",
+            "3" : "Bad Boy - 3",
+            "2" : "Rookie Member - 2",
+            "1" : "New CLR Member - 1"
+        }
+
+        clan_profile_link = f"https://www.rpg2.b-zone.ro/players/clan/{player_link}"
+
+        response = requests.get(clan_profile_link)
+
+        html = response.text
+
+        soup = BeautifulSoup(html, "lxml")
+
+        table = soup.find("table", attrs={"class": "vTable generalNormalTableSingle"})
+        rank = table.find_all("td")[5].text.strip()
+        print(f"player {player_link} rank: {ranks[rank]}")
+        return (player_link, ranks[rank])
+
+    def check_faction_rank(self, player_link):
+        """
+        @deprecated - need to check the rank name for every 
+        """
+        faction_profile_link = f"https://www.rpg2.b-zone.ro/players/faction/{player_link}"
+
+        response = requests.get(faction_profile_link)
+        html = response.text
+        
+        soup = BeautifulSoup(html, "lxml")
+
+        table = soup.find("table", attrs={"class": "vTable generalNormalTableSingle"})
+        rank = table.find_all("td")[5].text.strip()
+        print(f"player {player_link} rank: {rank}")
+        return (player_link, rank)
+
+
+    def get_clan_members(self):
+        def get_player_names(player_list):
+            return list(re.sub("/players/general/", "", player) for player in player_list)
+
+        clan_url = "https://www.rpg2.b-zone.ro/clans/members/Clanul%20Limbii%20Romane"
+
+        response = requests.get(clan_url)
+
+        html = response.text
+
+        soup = BeautifulSoup(html, "lxml")
+
+        print("getting the player tables")
+        players_link = list()
+        table_rows = soup.find_all("div", attrs={"class": "tooltipstered"})
+        for row in table_rows:
+            for element in row.find_all("a"):
+                if re.match("/players/general/*", element["href"]):
+                    players_link.append(element["href"])
+        return get_player_names(players_link)
+
 
 if __name__ == "__main__":
-    Scraper().check_turfs()
+    obj = Scraper()
+    players = obj.get_clan_members()
+    for player in players:
+        obj.check_faction_rank(player)
+        obj.check_clan_rank(player)
+        print("")
