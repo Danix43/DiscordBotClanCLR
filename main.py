@@ -65,9 +65,9 @@ class MyClient(discord.Client):
                 embed.add_field(name=k, value=v, inline=False)
             return embed
         await self.wait_until_ready()
-        # data = await self.scraper.check_turfs()
-        message = ("- War-urile a fost oprite temporar din cauza lagului de pe server")
-        data = {"🔴 Atentie! 🔴": message}
+        data = await self.scraper.check_turfs()
+        # message = ("- War-urile a fost oprite temporar din cauza lagului de pe server")
+        # data = {"🔴 Atentie! 🔴": message}
         print("sending message")
         # dev channel
         # await client.get_channel(813834934673735761).send(embed=await create_message(data))
