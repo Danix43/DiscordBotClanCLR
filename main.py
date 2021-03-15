@@ -1,7 +1,7 @@
 from scraper import Scraper
 import discord
 import asyncio
-from datetime import datetime
+from datetime import datetime, time
 import pytz
 from dotenv import load_dotenv
 import os
@@ -52,12 +52,12 @@ class MyClient(discord.Client):
             print("done waiting, resuming")
     
     async def scrap_turfs(self):
+        tz = pytz.timezone("Europe/Bucharest")
         async def create_message(data):
-            tz = pytz.timezone("Europe/Bucharest")
 
             embed = discord.Embed(title="👉🏻 Situatia turfurilor in mafii 👈🏻", 
                                 url="https://www.rpg2.b-zone.ro/wars/turfs",
-                                description=f"⏰ Ultima data actualizat la {datetime.now(tz)}⏰",
+                                description=f"⏰ Ultima data actualizat la {datetime.now(tz)}",
                                 color=0x00ff62)
             embed.set_author(name="Danix43", icon_url="https://cdn.discordapp.com/avatars/783680772014997546/92a2a4d507b520d27aa91121a8dece50.png")
             embed.set_thumbnail(url="http://i.imgur.com/Z3UHdYS.png")
@@ -65,15 +65,20 @@ class MyClient(discord.Client):
                 embed.add_field(name=k, value=v, inline=False)
             return embed
         await self.wait_until_ready()
-        data = await self.scraper.check_turfs()
-        print("sending message")
-        # dev channel
-        # await client.get_channel(813834934673735761).send(embed=await create_message(data))
-        # prod channel
-        await client.get_channel(813881497525289031).send(embed=await create_message(data))
-        print("done, waiting")
-        await asyncio.sleep(86400)
-        print("done waiting, resuming")
+
+        if time.strftime(datetime.now(tz), "%H:%M") == "22:00":
+            data = await self.scraper.check_turfs()
+            print("sending message")
+            # dev channel
+            # await client.get_channel(813834934673735761).send(embed=await create_message(data))
+            # prod channel
+            await client.get_channel(813881497525289031).send(embed=await create_message(data))
+            await asyncio.sleep(86400)
+            print("done, waiting")
+            print("done waiting, resuming")
+        else:
+            print("time not matched, waiting one hour")
+            await asyncio.sleep(3600)
 
 
 intents = discord.Intents.default()
