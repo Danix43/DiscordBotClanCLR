@@ -77,8 +77,8 @@ class MyClient(discord.Client):
             print("done, waiting")
             print("done waiting, resuming")
         else:
-            print("time not matched, waiting one hour")
-            await asyncio.sleep(3600)
+            print("time not matched, waiting two mins")
+            await asyncio.sleep(120)
 
 
 intents = discord.Intents.default()
