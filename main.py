@@ -65,20 +65,15 @@ class MyClient(discord.Client):
                 embed.add_field(name=k, value=v, inline=False)
             return embed
         await self.wait_until_ready()
-
-        if time.strftime(datetime.now(tz), "%H") == "22":
-            data = await self.scraper.check_turfs()
-            print("sending message")
-            # dev channel
-            # await client.get_channel(813834934673735761).send(embed=await create_message(data))
-            # prod channel
-            await client.get_channel(813881497525289031).send(embed=await create_message(data))
-            await asyncio.sleep(86400)
-            print("done, waiting")
-            print("done waiting, resuming")
-        else:
-            print("time not matched, waiting two mins")
-            await asyncio.sleep(120)
+        data = await self.scraper.check_turfs()
+        print("sending message")
+        # dev channel
+        # await client.get_channel(813834934673735761).send(embed=await create_message(data))
+        # prod channel
+        await client.get_channel(813881497525289031).send(embed=await create_message(data))
+        await asyncio.sleep(86400)
+        print("done, waiting")
+        print("done waiting, resuming")
 
 
 intents = discord.Intents.default()
