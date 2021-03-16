@@ -66,7 +66,7 @@ class MyClient(discord.Client):
             return embed
         await self.wait_until_ready()
 
-        if time.strftime(datetime.now(tz), "%H:%M") == "22:00":
+        if time.strftime(datetime.now(tz), "%H") == "22":
             data = await self.scraper.check_turfs()
             print("sending message")
             # dev channel
